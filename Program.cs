@@ -19,6 +19,9 @@ namespace leaseweb_downloader
 
         [Option("csv", Required = false, Default = false, HelpText = "Export invoices summary as CSV.")]
         public bool IncludeCsv { get; set; }
+
+        [Option('y', "year", Required = false, Default = null, HelpText = "Filter invoices by year (e.g., 2025).")]
+        public int? Year { get; set; }
     }
 
     class Program
@@ -37,11 +40,15 @@ namespace leaseweb_downloader
             Console.WriteLine("=== Leaseweb Invoice Downloader ===");
             Console.WriteLine($"Output directory: {Path.GetFullPath(opts.OutputPath)}");
             Console.WriteLine($"Formats: PDF={opts.IncludePdf}, JSON={opts.IncludeJson}, CSV={opts.IncludeCsv}");
+            if (opts.Year.HasValue)
+            {
+                Console.WriteLine($"Filtering by year: {opts.Year.Value}");
+            }
             Console.WriteLine();
 
             var httpClient = new HttpClient();
             var leasewebClient = new LeasewebClient(httpClient, opts.ApiKey);
-            var downloader = new DownloaderService(leasewebClient, opts.OutputPath);
+            var downloader = new DownloaderService(leasewebClient, opts.OutputPath, opts.Year);
 
             try
             {

@@ -37,6 +37,12 @@ dotnet run -- -k YOUR_API_KEY -o ./downloads --pdf --json --csv
 
 # JSON and CSV only (no PDF)
 dotnet run -- -k YOUR_API_KEY --pdf false --json --csv
+
+# Download only invoices from a specific year
+dotnet run -- -k YOUR_API_KEY --year 2025
+
+# Combine year filter with output directory
+dotnet run -- -k YOUR_API_KEY -o ./downloads -y 2024
 ```
 
 ### CLI Options
@@ -45,6 +51,7 @@ dotnet run -- -k YOUR_API_KEY --pdf false --json --csv
 |--------|---------|-------------|
 | `-k`, `--api-key` | *(required)* | Leaseweb API Key (`X-LSW-Auth`) |
 | `-o`, `--output` | `.` | Base output directory |
+| `-y`, `--year` | *(all years)* | Filter invoices by year (e.g., 2025) |
 | `--pdf` | `true` | Download invoices as PDF |
 | `--json` | `false` | Download invoice details as JSON |
 | `--csv` | `false` | Export invoices summary as CSV |

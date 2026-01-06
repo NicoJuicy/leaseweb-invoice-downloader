@@ -7,11 +7,13 @@ namespace leaseweb_downloader.Services
     {
         private readonly LeasewebClient _client;
         private readonly string _basePath;
+        private readonly int? _yearFilter;
 
-        public DownloaderService(LeasewebClient client, string basePath)
+        public DownloaderService(LeasewebClient client, string basePath, int? yearFilter = null)
         {
             _client = client;
             _basePath = basePath;
+            _yearFilter = yearFilter;
         }
 
         public async Task DownloadAllInvoicesAsync(bool includePdf, bool includeJson, bool includeCsv)
@@ -34,7 +36,16 @@ namespace leaseweb_downloader.Services
                 Console.WriteLine($"  Fetched {allInvoices.Count} of {total} invoices...");
             } while (allInvoices.Count < total);
 
-            Console.WriteLine($"Found {allInvoices.Count} invoices. Starting download...");
+            Console.WriteLine($"Found {allInvoices.Count} invoices.");
+
+            // Apply year filter if specified
+            if (_yearFilter.HasValue)
+            {
+                allInvoices = allInvoices.Where(i => i.Date.HasValue && i.Date.Value.Year == _yearFilter.Value).ToList();
+                Console.WriteLine($"Filtered to {allInvoices.Count} invoices for year {_yearFilter.Value}.");
+            }
+
+            Console.WriteLine("Starting download...");
 
             foreach (var invoice in allInvoices)
             {
