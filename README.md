@@ -7,6 +7,7 @@ A vibe-coded .NET CLI tool to download invoices from the Leaseweb API.
 - Download invoices as **PDF**
 - Export invoice details as **JSON**
 - Export all invoices summary as **CSV**
+- **Filter by year** (e.g., `--year 2025`)
 - Organized folder structure by year
 - Skip already downloaded files
 
